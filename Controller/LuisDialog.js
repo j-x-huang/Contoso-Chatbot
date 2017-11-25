@@ -3,25 +3,62 @@ var builder = require('botbuilder');
 exports.startDialog = function (bot) {
     
     // Replace {YOUR_APP_ID_HERE} and {YOUR_KEY_HERE} with your LUIS app ID and your LUIS key, respectively.
-    var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/{YOUR_APP_ID_HERE}?subscription-key={YOUR_KEY_HERE}&timezoneOffset=0&q=');
+    var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/4b0adc07-4a1a-49ea-90b3-c8cdcc4d1763?subscription-key=3d4376d05ce2404e8c718aed0392e82b&verbose=true&timezoneOffset=0&q=');
 
     bot.recognizer(recognizer);
 
-    bot.dialog('GetCalories', function (session, args) {
-
-        // Pulls out the food entity from the session if it exists
-        var foodEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'food');
-
-        // Checks if the for entity was found
-        if (foodEntity) {
-            session.send('Calculating calories in %s...', foodEntity.entity);
-            // Here you would call a function to get the foods nutrition information
-
-        } else {
-            session.send("No food identified! Please try again");
+    bot.dialog('CheckBalance', [
+        function (session, args, next) {
+            session.dialogData.args = args || {};
+            if (!session.conversationData["username"]) {
+                builder.Prompts.text(session, "Enter a username to setup your account.");
+            } else {
+                next(); // Skip if we already have this info.
+            }
+        },
+        function(session, results,next) {
+            if (results.response) {
+                session.conversationData["username"] = results.response;
+            }
+            session.send("Getting balance for " + session.conversationData["username"]);
         }
+    
+    ]).triggerAction({
+        matches: 'CheckBalance'
+    });
+
+    bot.dialog('DeleteAccount', function (session, args) {
+        session.send("delete account");
         
     }).triggerAction({
-        matches: 'GetCalories'
+        matches: 'DeleteAccount'
+    });
+
+    bot.dialog('OpenAccount', function (session, args) {
+        session.send("open account");
+        
+    }).triggerAction({
+        matches: 'OpenAccount'
+    });
+
+    bot.dialog('CheckStocks', function (session, args) {
+        session.send("check stocks");
+        
+    }).triggerAction({
+        matches: 'CheckStocks'
+    });
+
+    bot.dialog('Greeting', function (session, args) {
+        session.send("Hi!");
+        
+    }).triggerAction({
+        matches: 'Greeting'
+    });
+
+    bot.dialog('None', function (session, args) {
+        session.send("help func");
+        
+    }).triggerAction({
+        matches: 'None'
     });
 }
