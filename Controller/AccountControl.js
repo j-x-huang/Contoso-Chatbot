@@ -31,6 +31,32 @@ exports.removeAccount = function deleteAccount(session, username, accountType) {
     });
 }
 
+exports.displayAccounts = function getAllAccounts(session, username) {
+    rest.getAccount(url, session, username, null, function(message, session, username, accountType) {
+        var response = JSON.parse(message);
+        var allAccounts = [];
+        var count = 0;
+        for (var index in response) {
+            var usernameReceived = response[index].username;
+        
+            if (usernameReceived.toLowerCase() === username.toLowerCase()) {
+                count++;
+                if (response.length - 1) {
+                    allAccounts.push(response[index].account_type);
+                } else {
+                    allAccounts.push(response[index].account_type + ', ');
+                }
+            }
+        }
+        if (count === 0) {
+            session.send("You have no accounts");
+        } else {
+            session.send("%s, you have the following bank accounts: %s", username, allAccounts);
+        }
+
+    })
+}
+
 function handleDelete(body,session,username, accountType) {
     session.send("Deleted " + accountType + " account.")
 }

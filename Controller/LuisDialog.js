@@ -110,6 +110,29 @@ exports.startDialog = function (bot) {
         matches: 'Greeting'
     });
 
+    bot.dialog('GetAccounts', [
+        function (session, args, next) {
+            session.dialogData.args = args || {};
+            if (!session.conversationData["username"]) {
+                builder.Prompts.text(session, "Enter a username to setup your account.");
+            } else {
+                next(); // Skip if we already have this info.
+            }
+        },
+        function(session, results,next) {
+            if (results.response) {
+                session.conversationData["username"] = results.response;
+            }
+
+            session.send("Getting accounts for " + session.conversationData["username"]);
+            account.displayAccounts(session, session.conversationData["username"]);         
+
+        }
+    
+    ]).triggerAction({
+        matches:'GetAccounts'
+    });
+
     bot.dialog('None', function (session, args) {
         session.send("help func");
         
