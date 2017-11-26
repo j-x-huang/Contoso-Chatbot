@@ -45,10 +45,32 @@ exports.startDialog = function (bot) {
         matches: 'DeleteAccount'
     });
 
-    bot.dialog('OpenAccount', function (session, args) {
-        session.send("open account");
-        
-    }).triggerAction({
+    bot.dialog('OpenAccount', [
+        function (session, args, next) {
+            session.dialogData.args = args || {};
+            if (!session.conversationData["username"]) {
+                builder.Prompts.text(session, "Enter a username to setup your account.");
+            } else {
+                next(); // Skip if we already have this info.
+            }
+        },
+        function(session, results,next) {
+            if (results.response) {
+                session.conversationData["username"] = results.response;
+            }
+
+            var accountEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'Account');
+            var accountType = accountEntity.entity;
+            if (accountType) {
+                session.send("Opening a new " + accountType + " for " + session.conversationData["username"]);
+                account.sendAccount(session, session.conversationData["username"], accountType);
+            } else {
+                session.send('No account type identified. Please try again');
+            }
+
+        }
+    
+    ]).triggerAction({
         matches: 'OpenAccount'
     });
 

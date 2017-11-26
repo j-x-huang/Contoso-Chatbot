@@ -1,9 +1,25 @@
 var rest = require('../API/RestClient');
 
+var url = 'http://contosobankgroup.azurewebsites.net/tables/Account';
 exports.displayBalance = function getBalance(session, username, accountType) {
-    var url = 'http://contosobankgroup.azurewebsites.net/tables/Account';
     rest.getAccount(url, session, username, accountType, handleBalanceResponse);
 };
+
+exports.sendAccount = function postAccount(session, username, accountType) {
+    rest.postAccount(url, username, generateAccountNumber(), accountType);
+}
+
+function generateAccountNumber() {
+    var number = "";
+    for (var i = 0; i < 18; i++) {
+        if (i === 2 || i === 7 || i === 15) {
+            number += "-";
+        } else {
+            number += Math.floor((Math.random() * 10));            
+        }
+    }
+    return number;
+}
 
 function handleBalanceResponse(message, session, username, accountType) {
     var response = JSON.parse(message);
