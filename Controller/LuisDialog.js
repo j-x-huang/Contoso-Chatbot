@@ -1,4 +1,5 @@
 var builder = require('botbuilder');
+var account = require('./AccountControl');
 
 exports.startDialog = function (bot) {
     
@@ -20,7 +21,17 @@ exports.startDialog = function (bot) {
             if (results.response) {
                 session.conversationData["username"] = results.response;
             }
-            session.send("Getting balance for " + session.conversationData["username"]);
+
+            var accountEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'Account');
+            var accountType = accountEntity.entity;
+            console.log(accountType);
+            if (accountType) {
+                session.send("Getting balance for " + session.conversationData["username"]);
+                account.displayBalance(session, session.conversationData["username"], accountType);
+            } else {
+                session.send('No account type identified. Please try again');
+            }
+
         }
     
     ]).triggerAction({
