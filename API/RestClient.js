@@ -10,6 +10,27 @@ exports.getAccount = function getData(url, session, username, accountType, callb
     });
 };
 
+exports.deleteAccount = function deleteData(url,session, username ,accountType, id, callback) {
+    var options = {
+        url: url + "\\" + id,
+        method: 'DELETE',
+        headers: {
+            'ZUMO-API-VERSION': '2.0.0',
+            'Content-Type':'application/json'
+        }
+    };
+
+    request(options,function (err, res, body){
+        if( !err && res.statusCode === 200){
+            console.log(body);
+            callback(body,session,username, accountType);
+        }else {
+            console.log(err);
+            console.log(res);
+        }
+    });
+};
+
 exports.postAccount = function postData(url, username, accountNumber, accountType) {
     var options = {
         url: url,
