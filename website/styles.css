@@ -96,6 +96,34 @@
 	color:#701515;
 }
 
+.fix{
+    position:fixed;
+    bottom:0px;
+	right:7%;
+ }
+ 
+#chat-frame {
+    height: 400px;
+    width: 300px;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+	
+	
+
+}
+
+#chat-frame img {
+    width: 30px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+
 
 #header-special {
 		border-bottom: 1px solid;

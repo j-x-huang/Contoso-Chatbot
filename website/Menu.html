@@ -8,6 +8,21 @@
 		<link rel="stylesheet" href="styles.css">
 		<script src="js/jquery.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+		
+		<script type="text/javascript">
+        function openChat() {
+            var frame = document.getElementById("chat-frame");
+            frame.className = "";
+            var img = document.getElementById("chat-button");
+            img.className = "hide";
+        }
+        function closeChat() {
+            var frame = document.getElementById("chat-frame");
+            frame.className = "hide";
+            var img = document.getElementById("chat-button");
+            img.className = "";
+        }
+    </script>
 	</head>
 	
 	<body>
@@ -198,7 +213,12 @@
 				<li> <a href="#">Careers</a></li>
 			</ul>
 		</div>
-		
-
+		<div class="fix">
+		<img src="./Images/chatBar.png" class="fix" id="chat-button" onclick="openChat()"/>
+			<div id="chat-frame" class="hide">
+				<iframe src='https://webchat.botframework.com/embed/contoso_bank_group?s=ieTb6Frra6c.cwA.Rco.zoJgf6PK0VBpBgoXcW__SH7nJ8jfidX5VdYGaTgC5NQ'></iframe>				
+				<img src="./Images/minus.png" onclick="closeChat()" />
+			</div>
+		</div>
 
 </html>
