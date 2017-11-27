@@ -149,6 +149,7 @@ exports.startDialog = function (bot) {
         var cEntities = args.intent.entities;               
         
         if (cEntities) {
+            session.send("Getting exchange rates")
             stocks.displayExchangeRate(session, cEntities[0].entity.toUpperCase(), cEntities[1].entity.toUpperCase());
         } else {
             session.send("No valid currencies selected");
