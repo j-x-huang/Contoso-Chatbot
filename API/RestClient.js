@@ -72,3 +72,19 @@ exports.getStocks = function getData(url, session, company, callback) {
         }
     });
 }
+
+exports.getRates = function getData(url, session, callback) {
+    var options = {
+        url: url,
+        method: 'GET'
+    }
+
+    request(options,function (err, res, body){
+        if( err){
+            console.log(err);
+        }else {
+            callback(body,session);
+            
+        }
+    });
+}

@@ -100,12 +100,12 @@ exports.startDialog = function (bot) {
     });
 
     bot.dialog('CheckStocks', function (session, args) {
-        session.dialogData.args = args || {};        
+        session.dialogData.args = args || {};  
         var companyEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'Company');        
         var company = companyEntity.entity;
         var symbol = companyMap[company.toLowerCase()];
         if (symbol) {
-            session.send("Find stock quotes for " + company);
+            session.send("Finding stock quotes for " + company);
             stocks.displayStocks(session, symbol, company);
         } else {
             session.send("I cannot find stocks for the company you are looking for");
@@ -144,6 +144,19 @@ exports.startDialog = function (bot) {
     ]).triggerAction({
         matches:'GetAccounts'
     });
+
+    bot.dialog('ConvertCurrency', function(session, args) {
+        var cEntities = args.intent.entities;               
+        
+        if (cEntities) {
+            stocks.displayExchangeRate(session, cEntities[0].entity.toUpperCase(), cEntities[1].entity.toUpperCase());
+        } else {
+            session.send("No valid currencies selected");
+        }
+        
+    }).triggerAction({
+        matches:'ConvertCurrency'
+    })
 
     bot.dialog('None', function (session, args) {
         session.send("help func");
