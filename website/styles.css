@@ -89,9 +89,16 @@
 
 .list-unstyled > li > a:hover, 
 .list-unstyled > li > a:focus	{
-  color: #fc5050;;
+  color: #fc5050;
 }
 
 .media-body {
 	color:#701515;
+}
+
+
+#header-special {
+		border-bottom: 1px solid;
+		border-bottom-color: #fc5050;
+		margin-right:20px;
 }
