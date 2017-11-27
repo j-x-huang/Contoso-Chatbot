@@ -1,5 +1,8 @@
 var builder = require('botbuilder');
 var account = require('./AccountControl');
+var stocks = require('./StockQuotes');
+
+var companyMap = { microsoft: 'MSFT', apple:'AAPL', google:'GOOGL'}
 
 exports.startDialog = function (bot) {
     
@@ -97,7 +100,16 @@ exports.startDialog = function (bot) {
     });
 
     bot.dialog('CheckStocks', function (session, args) {
-        session.send("check stocks");
+        session.dialogData.args = args || {};        
+        var companyEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'Company');        
+        var company = companyEntity.entity;
+        var symbol = companyMap[company.toLowerCase()];
+        if (symbol) {
+            session.send("Find stock quotes for " + company);
+            stocks.displayStocks(session, symbol, company);
+        } else {
+            session.send("I cannot find stocks for the company you are looking for");
+        }
         
     }).triggerAction({
         matches: 'CheckStocks'

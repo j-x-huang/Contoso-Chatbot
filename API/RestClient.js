@@ -55,5 +55,20 @@ exports.postAccount = function postData(url, username, accountNumber, accountTyp
             console.log(error);
         }
       });
+}
 
+exports.getStocks = function getData(url, session, company, callback) {
+    var options = {
+        url: url,
+        method: 'GET'
+    }
+
+    request(options,function (err, res, body){
+        if( err){
+            console.log(err);
+        }else {
+            callback(body,session, company);
+            
+        }
+    });
 }
