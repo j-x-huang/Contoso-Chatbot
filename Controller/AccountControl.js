@@ -58,6 +58,52 @@ exports.displayAccounts = function getAllAccounts(session, username) {
     })
 }
 
+exports.transferMoney = function putAccount(session, username, accountA, accountB, amount) {
+    rest.getAccount(url, session, username, accountA, function(message, session, username, accountA) {
+        var response = JSON.parse(message);
+
+        var accountAExists = false;
+        var accountBExists = false;
+        var aIndex="";
+        var bIndex="";
+        for (var index in response) {
+            var usernameReceived = response[index].username;
+            var accountTypeReceived = response[index].account_type;
+
+            if (usernameReceived.toLowerCase() === username.toLowerCase()
+            && accountTypeReceived.toLowerCase() === accountA.toLowerCase()) {
+                accountAExists = true;
+                aIndex= index;
+            }
+            if (usernameReceived.toLowerCase() === username.toLowerCase()
+            && accountTypeReceived.toLowerCase() === accountB.toLowerCase()) {
+                accountBExists = true;
+                bIndex = index;
+            }
+        }
+
+        if (accountAExists && accountBExists ) {
+            if (response[aIndex].balance < amount) {
+                session.send("Insufficient funds in your " + accountA + " account.")
+            } else {
+                var newABalance = response[aIndex].balance - amount;
+                var newBBalance = response[bIndex].balance + amount;
+                rest.modifyAccount(url, session, response[aIndex].id, newABalance, function(session) {
+                    console.log("here2")
+                    rest.modifyAccount(url, session, response[bIndex].id, newBBalance, function(session) {
+                        console.log("here3")
+                        session.send("Transfer complete!");
+                    })
+                })
+
+            }
+        } else {
+            session.send("One of your accounts does not exist");
+        }
+        
+    })
+}
+
 function handleDelete(body,session,username, accountType) {
     session.send("Deleted " + accountType + " account.")
 }
@@ -75,7 +121,7 @@ function generateAccountNumber() {
 }
 
 function handleBalanceResponse(message, session, username, accountType) {
-    console.log(message);
+    //console.log(message);
     var response = JSON.parse(message);
     //console.log(response);
     var count = 0;

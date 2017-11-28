@@ -57,6 +57,32 @@ exports.postAccount = function postData(url, username, accountNumber, accountTyp
       });
 }
 
+exports.modifyAccount = function patchData(url, session, id, value, callback) {
+    var options = {
+        url: url + "\\" + id,
+        method: 'PATCH',
+        headers: {
+            'ZUMO-API-VERSION': '2.0.0',
+            'Content-Type':'application/json'
+        },
+        json: {
+            "balance" : value
+        }
+      };
+
+    request(options,function (err, res, body){
+        if( !err && res.statusCode === 200){
+            //console.log(body);
+            console.log("Success " + value);
+            callback(session);
+        }else {
+            console.log(err);
+            console.log("No Success " + value);
+            //console.log(res);
+        }
+    });
+}
+
 exports.getStocks = function getData(url, session, company, callback) {
     var options = {
         url: url,

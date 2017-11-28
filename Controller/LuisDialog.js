@@ -178,9 +178,35 @@ exports.startDialog = function (bot) {
         matches:'Help'
     })
 
-    bot.dalog('TransferMoney', function(session, args) {
+    bot.dialog('TransferMoney', [function(session, args, next) {
+        if (!session.conversationData["username"]) {
+            builder.Prompts.text(session, "Sure, please enter your username");
+        } else {
+            next(); // Skip if we already have this info.
+        }
+    },
+    function(session, results) {
+        if (results.response) {
+            session.conversationData["username"] = results.response;
+        }
+        builder.Prompts.text(session, "What account do you want to transfer from?");        
+    },
+    function(session, results) {
+        session.dialogData.fromAccount = results.response;        
+        builder.Prompts.text(session, "What account do you want to transfer to?");        
+    },
+    function(session,results) {
+        session.dialogData.toAccount = results.response;
+        builder.Prompts.number(session, "How much money do you want to transfer? Please do not type a currency symbol");
+    },
+    function(session, results) {
+        session.dialogData.amount = results.response;
+        session.send("Transferring money");
+        account.transferMoney(session, session.conversationData["username"], session.dialogData.fromAccount,
+            session.dialogData.toAccount, session.dialogData.amount);
+    }
 
-    }).triggerAction({
+    ]).triggerAction({
         matches:'TransferMoney'
     })
     bot.dialog('None', function (session, args) {
