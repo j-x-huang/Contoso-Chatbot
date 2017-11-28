@@ -159,6 +159,30 @@ exports.startDialog = function (bot) {
         matches:'ConvertCurrency'
     })
 
+    bot.dialog('Help', function(session, args) {
+        session.send(new builder.Message(session)
+        .addAttachment(
+            new builder.HeroCard(session)
+                .title("Hi again")
+                .text(`I can help you do these awesome things:
+                
+                \n • View your balance
+                \n • Open a new bank account
+                \n • Remove your bank account
+                \n • View what types of bank accounts you have
+                \n • Get exchange rates
+                \n • Get stock quotes`)        
+    
+        ));
+    }).triggerAction({
+        matches:'Help'
+    })
+
+    bot.dalog('TransferMoney', function(session, args) {
+
+    }).triggerAction({
+        matches:'TransferMoney'
+    })
     bot.dialog('None', function (session, args) {
         session.send("help func");
         
