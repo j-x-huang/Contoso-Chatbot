@@ -19,8 +19,37 @@ server.post('/api/messages', connector.listen());
 
 // Receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
+    session.send(new builder.Message(session)
+    .addAttachment(
+        new builder.HeroCard(session)
+            .title("Hi, welcome to Contoso Bank")
+            .subtitle("I am Conrad, your ContosoBot")
+            .text(`I can help you do these awesome things:
+            
+            \n • View your balance
+            \n • Open a new bank account
+            \n • Remove your bank account
+            \n • View what types of bank accounts you have
+            \n • Get exchange rates
+            \n • Get stock quotes
+            \n
+            \n Type 'help' to see all options again.`)
     
-    session.send('Sorry, I did not understand \'%s\'. Type \'help\' if you need assistance.', session.message.text);
+
+    ));
 });
+
+// Send welcome when conversation with bot is started, by initiating the root dialog
+bot.on('conversationUpdate', function (message) {
+    if (message.membersAdded) {
+        message.membersAdded.forEach(function (identity) {
+            if (identity.id === message.address.bot.id) {
+                bot.beginDialog(message.address, '/');
+            }
+        });
+    }
+});
+
+
 
 luis.startDialog(bot);

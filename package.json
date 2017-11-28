@@ -19,6 +19,7 @@
   "homepage": "https://github.com/j-x-huang/Contoso#readme",
   "dependencies": {
     "botbuilder": "^3.12.0",
+    "chai-json": "^0.1.1",
     "restify": "^6.3.4"
   },
   "devDependencies": {

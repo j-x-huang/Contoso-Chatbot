@@ -1,5 +1,6 @@
 var rest = require('../API/RestClient');
 
+
 var url = 'http://contosobankgroup.azurewebsites.net/tables/Account';
 exports.displayBalance = function getBalance(session, username, accountType) {
     rest.getAccount(url, session, username, accountType, handleBalanceResponse);
@@ -74,8 +75,9 @@ function generateAccountNumber() {
 }
 
 function handleBalanceResponse(message, session, username, accountType) {
+    console.log(message);
     var response = JSON.parse(message);
-    console.log(response);
+    //console.log(response);
     var count = 0;
     for (var index in response) {
         var usernameReceived = response[index].username;
@@ -92,3 +94,4 @@ function handleBalanceResponse(message, session, username, accountType) {
         session.send("You have no " + accountType+ " accounts");
     }
 };
+
