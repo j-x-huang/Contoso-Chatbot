@@ -1,6 +1,7 @@
 var restify = require('restify');
 var builder = require('botbuilder');
 var luis = require('./Controller/LuisDialog');
+var fs = require('fs');
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -19,6 +20,9 @@ server.post('/api/messages', connector.listen());
 
 // Receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
+
+    var image64 = new Buffer(fs.readFileSync('contosobotcolor.png').toString("base64"));    
+
     session.send(new builder.Message(session)
     .addAttachment(
         new builder.HeroCard(session)
@@ -34,6 +38,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
             \n • Get stock quotes
             \n
             \n Type 'help' to see all options again.`)
+            .images([builder.CardImage.create(session,"data:image/jpeg;base64,"+image64)])
     
 
     ));
