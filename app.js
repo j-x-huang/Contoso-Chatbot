@@ -26,20 +26,24 @@ var bot = new builder.UniversalBot(connector, [function (session) {
     session.send(new builder.Message(session)
     .addAttachment(
         new builder.HeroCard(session)
-            .title("Hi, welcome to Contoso Bank")
+            .title("Hi, welcome to Contoso")
             .subtitle("I am Conrad, your ContosoBot")
             .text(`I can help you do these awesome things:
             
             \n • View your balance
             \n • Open a new bank account
             \n • Remove your bank account
+            \n • Make transfers across accounts
             \n • View what types of bank accounts you have
             \n • Get exchange rates
             \n • Get stock quotes
             \n
-            \n Type 'help' to see all options again.`)
+            \n Type 'help' to see all options again. If you want to ask me about these options, type 'explain more for me' or click on the link below.`)
             .images([builder.CardImage.create(session,"data:image/jpeg;base64,"+image64)])
-    
+            .buttons([
+                builder.CardAction.openUrl(session, 'https://contosowebsite.azurewebsites.net/faq.html', 'Help'),
+                builder.CardAction.openUrl(session, 'about:blank', 'Log in')
+            ])
 
         ));
         builder.Prompts.text(session, "Enter your name to begin");

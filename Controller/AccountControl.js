@@ -23,10 +23,8 @@ exports.sendAccount = function postAccount(session, username, accountType) {
            }
         }
         if (count > 0) {
-            console.log("here2")
             session.send("You already have a " + accountType + ". You cannot create another.");
         } else {
-            console.log("here3");
          rest.postAccount(url, username, generateAccountNumber(), accountType, session, function(session) {
              session.send("Account created!")
          });

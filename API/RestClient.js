@@ -58,6 +58,27 @@ exports.postAccount = function postData(url, username, accountNumber, accountTyp
       });
 }
 
+exports.postImage = function postData(url, session, msg, callback) {
+    var options = {
+        url: url,
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        'Prediction-Key': 'b582db3effb145019697ca4ea0b6a6f6'
+        },
+        json: { 'Url': msg }
+    };
+
+    request(options, function (error, res, body) {
+        if (error) {
+            console.log(error);
+        } else {    
+            console.log(body);
+            callback(session, body);
+        }
+    });
+}
+
 exports.modifyAccount = function patchData(url, session, id, value, callback) {
     var options = {
         url: url + "\\" + id,

@@ -2,6 +2,9 @@ var builder = require('botbuilder');
 var account = require('./AccountControl');
 var stocks = require('./StockQuotes');
 var qna = require('./QnA');
+var fs = require('fs');
+var customVision = require('./CustomVision')
+
 
 var companyMap = { microsoft: 'MSFT', apple:'AAPL', google:'GOOGL'}
 
@@ -30,7 +33,7 @@ exports.startDialog = function (bot) {
             var accountType = accountEntity.entity;
             console.log(accountType);
             if (accountType) {
-                session.send("Getting balance for " + session.conversationData.name);
+                session.send("Ok " + session.conversationData.name+ ", I will get the balance for you." );
                 account.displayBalance(session, session.conversationData["username"], accountType);
             } else {
                 session.send('No account type identified. Please try again');
@@ -88,7 +91,7 @@ exports.startDialog = function (bot) {
             var accountEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'Account');
             var accountType = accountEntity.entity;
             if (accountType) {
-                session.send("Opening a new " + accountType + " account for " + session.conversationData.name);
+                session.send("Ok " + session.conversationData.name+ ", I will open a " + accountType + " account for you.");
                 account.sendAccount(session, session.conversationData["username"], accountType);
             } else {
                 session.send('No account type identified. Please try again');
@@ -137,7 +140,7 @@ exports.startDialog = function (bot) {
                 session.conversationData["username"] = results.response;
             }
 
-            session.send("Getting accounts for " + session.conversationData.name);
+            session.send("Ok " + session.conversationData.name+ ", I will fetch your accounts.");
             account.displayAccounts(session, session.conversationData["username"]);         
 
         }
@@ -170,9 +173,16 @@ exports.startDialog = function (bot) {
                 \n • View your balance
                 \n • Open a new bank account
                 \n • Remove your bank account
+                \n • Make transfers across accounts
                 \n • View what types of bank accounts you have
                 \n • Get exchange rates
-                \n • Get stock quotes`)        
+                \n • Get stock quotes
+                \n If you want to ask me about these options, type 'explain more for me' or click on the link below.`
+                
+            ) 
+                .buttons([
+                    builder.CardAction.openUrl(session, 'https://contosowebsite.azurewebsites.net/faq.html', 'Help')
+                ])       
     
         ));
     }).triggerAction({
@@ -233,8 +243,30 @@ exports.startDialog = function (bot) {
     ]).triggerAction({
         matches:'SwitchUser'
     })
+
+    bot.dialog('CustomVision', [
+        function (session) {
+            builder.Prompts.text(session, "Sure " +session.conversationData.name + " send a image to me");            
+        },
+
+        function(session, results) {
+            console.log("here");
+            var msg = results.response;
+            if ((session.message.attachments && session.message.attachments.length > 0) || msg.includes("http")) {
+                //call custom vision
+                customVision.sendImage(session, msg);
+        
+            }
+            else {
+            }
+        }
+
+
+    ]).triggerAction({
+        matches: 'CustomVision'
+    });
     bot.dialog('None', function (session, args) {
-        session.send("help func");
+        session.send("Sorry I did not understand what you said.");
         
     }).triggerAction({
         matches: 'None'
