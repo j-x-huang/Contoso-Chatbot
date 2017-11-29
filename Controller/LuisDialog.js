@@ -224,6 +224,7 @@ exports.startDialog = function (bot) {
     bot.dialog('QnA', [function(session, args, next) {
         session.dialogData.args = args || {};
         builder.Prompts.text(session, "Sure " +session.conversationData.name + " what would you like to know?");
+        
     },
     function(session,results, next) {
         qna.talkToQnA(session, results.response); //get qna question and post it
@@ -246,7 +247,7 @@ exports.startDialog = function (bot) {
     //user ask if they can upload message
     bot.dialog('CustomVision', [
         function (session) {
-            builder.Prompts.text(session, "Sure " +session.conversationData.name + " send a image to me");  //get image url          
+            builder.Prompts.text(session, "Sure " +session.conversationData.name + " send an image link");  //get image url          
         },
 
         function(session, results) {
