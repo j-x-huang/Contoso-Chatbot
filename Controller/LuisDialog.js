@@ -259,6 +259,7 @@ exports.startDialog = function (bot) {
         
             }
             else {
+                session.send("This is not a valid link");
             }
         }
 
