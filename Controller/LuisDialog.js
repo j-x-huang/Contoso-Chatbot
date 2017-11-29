@@ -1,6 +1,7 @@
 var builder = require('botbuilder');
 var account = require('./AccountControl');
 var stocks = require('./StockQuotes');
+var qna = require('./QnA');
 
 var companyMap = { microsoft: 'MSFT', apple:'AAPL', google:'GOOGL'}
 
@@ -208,6 +209,17 @@ exports.startDialog = function (bot) {
 
     ]).triggerAction({
         matches:'TransferMoney'
+    })
+
+    bot.dialog('QnA', [function(session, args, next) {
+        session.dialogData.args = args || {};
+        builder.Prompts.text(session, "Sure, what would you like to know?");
+    },
+    function(session,results, next) {
+        qna.talkToQnA(session, results.response);
+    }
+    ]).triggerAction({
+        matches: 'QnA'
     })
     bot.dialog('None', function (session, args) {
         session.send("help func");

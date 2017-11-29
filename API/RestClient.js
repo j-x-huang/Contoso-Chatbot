@@ -114,3 +114,26 @@ exports.getRates = function getData(url, session, callback) {
         }
     });
 }
+
+exports.postQnAResults = function getData(url, session, question, callback){
+    var options = {
+        url: url,
+        method: 'POST',
+        headers: {
+            'Ocp-Apim-Subscription-Key': 'd1ee374ec2804822b7134039a2811828',
+            'Content-Type':'application/json'
+        },
+        json: {
+            "question" : question
+        }
+      };
+  
+      request(options, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            callback(body, session, question);
+        }
+        else{
+            console.log(error);
+        }
+      });
+};
