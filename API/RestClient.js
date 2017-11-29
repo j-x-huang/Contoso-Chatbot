@@ -1,5 +1,5 @@
 var request = require("request");
-
+//Get all accounts from database
 exports.getAccount = function getData(url, session, username, accountType, callback) {
     request.get(url, {'headers':{'ZUMO-API-VERSION': '2.0.0'}}, function handleGetResponse( err,res,body){
         if(err){
@@ -9,7 +9,7 @@ exports.getAccount = function getData(url, session, username, accountType, callb
         }
     });
 };
-
+//delete single item from DB
 exports.deleteAccount = function deleteData(url,session, username ,accountType, id, callback) {
     var options = {
         url: url + "\\" + id,
@@ -30,7 +30,7 @@ exports.deleteAccount = function deleteData(url,session, username ,accountType, 
         }
     });
 };
-
+//Create/post new item in DB
 exports.postAccount = function postData(url, username, accountNumber, accountType, session,callback) {
     var options = {
         url: url,
@@ -57,7 +57,7 @@ exports.postAccount = function postData(url, username, accountNumber, accountTyp
         }
       });
 }
-
+// rest post to custom vision
 exports.postImage = function postData(url, session, msg, callback) {
     var options = {
         url: url,
@@ -78,7 +78,7 @@ exports.postImage = function postData(url, session, msg, callback) {
         }
     });
 }
-
+//modify/patch DB item
 exports.modifyAccount = function patchData(url, session, id, value, callback) {
     var options = {
         url: url + "\\" + id,
@@ -104,7 +104,7 @@ exports.modifyAccount = function patchData(url, session, id, value, callback) {
         }
     });
 }
-
+// call stock api
 exports.getStocks = function getData(url, session, company, callback) {
     var options = {
         url: url,
@@ -120,7 +120,7 @@ exports.getStocks = function getData(url, session, company, callback) {
         }
     });
 }
-
+// call currency exchange api
 exports.getRates = function getData(url, session, callback) {
     var options = {
         url: url,
@@ -136,7 +136,7 @@ exports.getRates = function getData(url, session, callback) {
         }
     });
 }
-
+// call QnA maker
 exports.postQnAResults = function getData(url, session, question, callback){
     var options = {
         url: url,

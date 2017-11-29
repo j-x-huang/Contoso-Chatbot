@@ -10,16 +10,16 @@ var companyMap = { microsoft: 'MSFT', apple:'AAPL', google:'GOOGL'}
 
 exports.startDialog = function (bot) {
     
-    // Replace {YOUR_APP_ID_HERE} and {YOUR_KEY_HERE} with your LUIS app ID and your LUIS key, respectively.
     var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/4b0adc07-4a1a-49ea-90b3-c8cdcc4d1763?subscription-key=3d4376d05ce2404e8c718aed0392e82b&verbose=true&timezoneOffset=0&q=');
 
     bot.recognizer(recognizer);
 
+    //Checks balance of users account
     bot.dialog('CheckBalance', [
         function (session, args, next) {
             session.dialogData.args = args || {};
             if (!session.conversationData["username"]) {
-                builder.Prompts.text(session, "Enter a username to setup your account.");
+                builder.Prompts.text(session, "Enter a username to setup your account."); 
             } else {
                 next(); // Skip if we already have this info.
             }
@@ -30,13 +30,13 @@ exports.startDialog = function (bot) {
             }
 
             var accountEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'Account');
-            var accountType = accountEntity.entity;
+            var accountType = accountEntity.entity; //find the account type entity
             console.log(accountType);
             if (accountType) {
                 session.send("Ok " + session.conversationData.name+ ", I will get the balance for you." );
                 account.displayBalance(session, session.conversationData["username"], accountType);
             } else {
-                session.send('No account type identified. Please try again');
+                session.send('No account type identified. Please try again'); //if account type is null
             }
 
         }
@@ -44,7 +44,7 @@ exports.startDialog = function (bot) {
     ]).triggerAction({
         matches: 'CheckBalance'
     });
-
+    //this deletes one of the users accounts
     bot.dialog('DeleteAccount', [
         function (session, args, next) {
             session.dialogData.args = args || {};
@@ -60,12 +60,12 @@ exports.startDialog = function (bot) {
             }
 
             var accountEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'Account');
-            var accountType = accountEntity.entity;
+            var accountType = accountEntity.entity; //get account type entity
             if (accountType) {
                 session.send("Deleting your " + accountType + " account.");
                 account.removeAccount(session, session.conversationData["username"], accountType);
             } else {
-                session.send('No account type identified. Please try again');
+                session.send('No account type identified. Please try again'); //if the entity is null
             }
 
         }
@@ -73,7 +73,7 @@ exports.startDialog = function (bot) {
     ]).triggerAction({
         matches: 'DeleteAccount'
     });
-
+    //this creates a new account for the user
     bot.dialog('OpenAccount', [
         function (session, args, next) {
             session.dialogData.args = args || {};
@@ -89,12 +89,12 @@ exports.startDialog = function (bot) {
             }
 
             var accountEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'Account');
-            var accountType = accountEntity.entity;
+            var accountType = accountEntity.entity; //get the account type entity
             if (accountType) {
                 session.send("Ok " + session.conversationData.name+ ", I will open a " + accountType + " account for you.");
                 account.sendAccount(session, session.conversationData["username"], accountType);
             } else {
-                session.send('No account type identified. Please try again');
+                session.send('No account type identified. Please try again'); //if the entity is null
             }
 
         }
@@ -102,17 +102,17 @@ exports.startDialog = function (bot) {
     ]).triggerAction({
         matches: 'OpenAccount'
     });
-
+    //find the stock prices for states company
     bot.dialog('CheckStocks', function (session, args) {
         session.dialogData.args = args || {};  
         var companyEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'Company');        
-        var company = companyEntity.entity;
-        var symbol = companyMap[company.toLowerCase()];
+        var company = companyEntity.entity; //gets the name of company from entity
+        var symbol = companyMap[company.toLowerCase()]; //consult dictionary to get code
         if (symbol) {
             session.send("Finding stock quotes for " + company);
             stocks.displayStocks(session, symbol, company);
         } else {
-            session.send("I cannot find stocks for the company you are looking for");
+            session.send("I cannot find stocks for the company you are looking for"); //if code is not in dictionary
         }
         
     }).triggerAction({
@@ -125,7 +125,7 @@ exports.startDialog = function (bot) {
     }).triggerAction({
         matches: 'Greeting'
     });
-
+    //This gets all the account names the user owns
     bot.dialog('GetAccounts', [
         function (session, args, next) {
             session.dialogData.args = args || {};
@@ -148,25 +148,25 @@ exports.startDialog = function (bot) {
     ]).triggerAction({
         matches:'GetAccounts'
     });
-
+    //This get the exchange rate of currency. Default value of that currency is 1.
     bot.dialog('ConvertCurrency', function(session, args) {
-        var cEntities = args.intent.entities;               
+        var cEntities = args.intent.entities;               //If there are multiple entities
         
         if (cEntities) {
             session.send("Getting exchange rates")
-            stocks.displayExchangeRate(session, cEntities[0].entity.toUpperCase(), cEntities[1].entity.toUpperCase());
+            stocks.displayExchangeRate(session, cEntities[0].entity.toUpperCase(), cEntities[1].entity.toUpperCase()); //Extracts the code from the entities
         } else {
-            session.send("No valid currencies selected");
+            session.send("No valid currencies selected"); //no entities in intent message
         }
         
     }).triggerAction({
         matches:'ConvertCurrency'
     })
-
+    //If user asks for help
     bot.dialog('Help', function(session, args) {
         session.send(new builder.Message(session)
         .addAttachment(
-            new builder.HeroCard(session)
+            new builder.HeroCard(session) //create help hero card
                 .title("Hi again")
                 .text(`I can help you do these awesome things:
                 
@@ -188,7 +188,7 @@ exports.startDialog = function (bot) {
     }).triggerAction({
         matches:'Help'
     })
-
+    //user trasfer money between accounts
     bot.dialog('TransferMoney', [function(session, args, next) {
         if (!session.conversationData["username"]) {
             builder.Prompts.text(session, "Sure, please enter your username");
@@ -200,18 +200,18 @@ exports.startDialog = function (bot) {
         if (results.response) {
             session.conversationData["username"] = results.response;
         }
-        builder.Prompts.text(session, "What account do you want to transfer from?");        
+        builder.Prompts.text(session, "What account do you want to transfer from?");       //from-account 
     },
     function(session, results) {
         session.dialogData.fromAccount = results.response;        
-        builder.Prompts.text(session, "What account do you want to transfer to?");        
+        builder.Prompts.text(session, "What account do you want to transfer to?");    //to-accout    
     },
     function(session,results) {
         session.dialogData.toAccount = results.response;
-        builder.Prompts.number(session, "How much money do you want to transfer? Please do not type a currency symbol");
+        builder.Prompts.number(session, "How much money do you want to transfer? Please do not type a currency symbol"); //value
     },
     function(session, results) {
-        session.dialogData.amount = results.response;
+        session.dialogData.amount = results.response;   
         session.send("Transferring money");
         account.transferMoney(session, session.conversationData["username"], session.dialogData.fromAccount,
             session.dialogData.toAccount, session.dialogData.amount);
@@ -220,18 +220,18 @@ exports.startDialog = function (bot) {
     ]).triggerAction({
         matches:'TransferMoney'
     })
-
+    //If user wants the bot to explain its functionality
     bot.dialog('QnA', [function(session, args, next) {
         session.dialogData.args = args || {};
         builder.Prompts.text(session, "Sure " +session.conversationData.name + " what would you like to know?");
     },
     function(session,results, next) {
-        qna.talkToQnA(session, results.response);
+        qna.talkToQnA(session, results.response); //get qna question and post it
     }
     ]).triggerAction({
         matches: 'QnA'
     })
-
+    //swaps the users username
     bot.dialog('SwitchUser', [function(session, args, next) {
         session.dialogData.args = args || {};
         builder.Prompts.text(session, "Sure " +session.conversationData.name + " what username do you want to change to");
@@ -243,16 +243,16 @@ exports.startDialog = function (bot) {
     ]).triggerAction({
         matches:'SwitchUser'
     })
-
+    //user ask if they can upload message
     bot.dialog('CustomVision', [
         function (session) {
-            builder.Prompts.text(session, "Sure " +session.conversationData.name + " send a image to me");            
+            builder.Prompts.text(session, "Sure " +session.conversationData.name + " send a image to me");  //get image url          
         },
 
         function(session, results) {
             console.log("here");
             var msg = results.response;
-            if ((session.message.attachments && session.message.attachments.length > 0) || msg.includes("http")) {
+            if ((session.message.attachments && session.message.attachments.length > 0) || msg.includes("http")) { //check if it's a link
                 //call custom vision
                 customVision.sendImage(session, msg);
         
@@ -265,7 +265,7 @@ exports.startDialog = function (bot) {
     ]).triggerAction({
         matches: 'CustomVision'
     });
-
+    //change user's name
     bot.dialog('SetName', [function (session, args, next) {
         session.dialogData.args = args || {};
         builder.Prompts.text(session, "Sure, what would you like me to change your name to");   

@@ -5,10 +5,10 @@ exports.displayExchangeRate = function getRates(session, fromCurrency, toCurrenc
     var url = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=' 
         + fromCurrency + '&to_currency=' + toCurrency +'&apikey=P20P9RQXQ5YG6ZCT';
 
-    rest.getRates(url, session, function(message, session) {
+    rest.getRates(url, session, function(message, session) { //rest call to api
         var response = JSON.parse(message);
-        console.log(response);
-        for (var index in response ) {
+        console.log(response);  
+        for (var index in response ) {  //extract currency names and value
             var fCurrency = response[index]["2. From_Currency Name"];
             var tCurrency = response[index]["4. To_Currency Name"];
             var rate = response[index]["5. Exchange Rate"];
@@ -24,10 +24,10 @@ exports.displayStocks = function getStocks(session, symbol, company) {
 
         var timeSeries = response["Time Series (Daily)"];
         var count = 0;
-        for (var time in timeSeries) {
+        for (var time in timeSeries) { 
 
-        session.send(new builder.Message(session).addAttachment({
-            contentType: "application/vnd.microsoft.card.adaptive",
+        session.send(new builder.Message(session).addAttachment({ //create new adaptive card to hold information
+            contentType: "application/vnd.microsoft.card.adaptive", 
             content: {
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "type": "AdaptiveCard",
@@ -35,12 +35,12 @@ exports.displayStocks = function getStocks(session, symbol, company) {
                 "body": [
                     {
                         "type": "TextBlock",
-                        "text": company + " " + symbol + " (" +time + ")",
+                        "text": company + " " + symbol + " (" +time + ")", 
                         "size": "large"
                     },
                     {
                         "type": "TextBlock",
-                        "text" : "Open: $" + timeSeries[time]["1. open"]
+                        "text" : "Open: $" + timeSeries[time]["1. open"] //extract values from api response
                     },
                     {
                         "type": "TextBlock",
@@ -61,7 +61,7 @@ exports.displayStocks = function getStocks(session, symbol, company) {
                 ]
             }
         }));
-        count ++;
+        count ++;   //stop after making a card for the first result
         if (count > 0) {
             break;
         }

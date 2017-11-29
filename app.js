@@ -20,9 +20,9 @@ server.post('/api/messages', connector.listen());
 
 // Receive messages from the user
 var bot = new builder.UniversalBot(connector, [function (session) {
-
+    //read image from file
     var image64 = new Buffer(fs.readFileSync('contosobotcolor.png').toString("base64"));    
-
+    //Create welcome hero card
     session.send(new builder.Message(session)
     .addAttachment(
         new builder.HeroCard(session)
@@ -46,16 +46,16 @@ var bot = new builder.UniversalBot(connector, [function (session) {
             ])
 
         ));
-        builder.Prompts.text(session, "Enter your name to begin");
+        builder.Prompts.text(session, "Enter your name to begin"); //prompt user for their name
     
     },
     function(session, results) {
         session.conversationData.name = results.response;
         if (!session.conversationData.name) {
             session.conversationData.name = "Human";
-            session.send("Sorry I didn't quite get your name. I will call you Human for now")
+            session.send("Sorry I didn't quite get your name. I will call you Human for now"); //if name is not detected
         } else {
-            session.send("Hi " + session.conversationData.name);
+            session.send("Hi " + session.conversationData.name); //say their name
         }
     }
 ]);
