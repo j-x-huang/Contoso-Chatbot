@@ -3,61 +3,143 @@ var assert = require('assert');
 var chai = require('chai');
 var expect = require('chai').expect;
 var should = require('chai').should;
-var account = require('../Controller/AccountControl');
-var restClient = require('../API/RestClient');
+var request = require("request");
 
-chai.use(require('chai-json'));
 
-describe('AccountControl', function() {
-  describe('#handleBalanceResponse', function() {
+
+describe('Rest', function() {
+  describe('#getRequest', function() {
     it('should return balance of savings account', function(done) {
         this.timeout(0);
-        var url = 'http://contosobankgroup.azurewebsites.net/tables/Account';        
-        restClient.getAccount(url, null, 'Jack', 'savings', function(body, session, username, accountType) {
-            expect(body).to.be.a.jsonFile();
-          });
+        var url = 'http://contosobankgroup.azurewebsites.net/tables/Account';   
+        
+        request.get(url, {'headers':{'ZUMO-API-VERSION': '2.0.0'}}, function(err,res,body) {
+            expect(res.statusCode).to.equal(200);
+            done();
+        });
+
     });
   });
 });
 
-var session = {
-    msg : "",
+describe('Rest', function() {
+    describe('#postRequest', function() {
+      it('should return balance of savings account', function(done) {
+          this.timeout(0);
+          var url = 'http://contosobankgroup.azurewebsites.net/tables/Account'; 
+          
+          var options = {
+            url: url,
+            method: 'POST',
+            headers: {
+                'ZUMO-API-VERSION': '2.0.0',
+                'Content-Type':'application/json'
+            },
+            json: {
+                "username" : "Test",
+                "account_number" : "00-0000-0000000-00",
+                "account_type" : "test",
+                "balance" : 0
+            }
+          };
+          
+          request(options, function (err, res, body) {
+            expect(res.statusCode).to.equal(201);
+            done();
+          });
+  
+      });
+    });
+  });
 
-    get msg() {
-        return this.msg;
-    },
+  describe('Rest', function() {
+    describe('#getStocks', function() {
+      it('should return balance of savings account', function(done) {
+          this.timeout(0);
+          var url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AAPL&apikey=P20P9RQXQ5YG6ZCT';
+          
+          var options = {
+            url: url,
+            method: 'GET'
+        }
+    
+        request(options,function (err, res, body){
+            expect(res.statusCode).to.equal(200);
+            done();
+        });
+  
+      });
+    });
+  });
 
-    set msg(x) {
-        this.msg = x;
-    },
+  describe('Rest', function() {
+    describe('#getRates', function() {
+      it('should return balance of savings account', function(done) {
+          this.timeout(0);
+          var url = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=USD&to_currency=NZD&apikey=P20P9RQXQ5YG6ZCT';
+          
+          var options = {
+            url: url,
+            method: 'GET'
+        }
+    
+        request(options,function (err, res, body){
+            expect(res.statusCode).to.equal(200);
+            done();
+        });
+  
+      });
+    });
+  });
 
-    send(x) {
-        this.msg = x;
-    }
+  describe('Rest', function() {
+    describe('#postQnAResults', function() {
+      it('should return balance of savings account', function(done) {
+          this.timeout(0);
+          var url = 'https://westus.api.cognitive.microsoft.com/qnamaker/v2.0/knowledgebases/202ea05b-d3ae-4b45-8b81-32d6313f1b87/generateAnswer';
+          
+          var options = {
+            url: url,
+            method: 'POST',
+            headers: {
+                'Ocp-Apim-Subscription-Key': 'd1ee374ec2804822b7134039a2811828',
+                'Content-Type':'application/json'
+            },
+            json: {
+                "question" : "Hi"
+            }
+          };
+    
+        request(options,function (err, res, body){
+            expect(res.statusCode).to.equal(200);
+            done();
+        });
+  
+      });
+    });
+  });
 
-}
-
-var validBody = [
-    {
-        "id": "d2241c31-b500-434d-97af-9aba987697c2",
-        "createdAt": "2017-11-26T01:59:39.945Z",
-        "updatedAt": "2017-11-26T01:59:40.023Z",
-        "version": "AAAAAAAAB9I=",
-        "deleted": false,
-        "username": "Jack",
-        "account_number": "12-3456-7891011-12",
-        "account_type": "savings",
-        "balance": 89.56
-    },
-    {
-        "id": "30dab39a-a1c8-491e-8f02-1d248d94dd17",
-        "createdAt": "2017-11-26T03:27:08.653Z",
-        "updatedAt": "2017-11-26T03:27:08.653Z",
-        "version": "AAAAAAAAB9c=",
-        "deleted": false,
-        "username": "Jack",
-        "account_number": "91-7257-1164271-07",
-        "account_type": "fastsaver",
-        "balance": 0
-    }
-]
+  describe('Rest', function() {
+    describe('#postImage', function() {
+      it('should return balance of savings account', function(done) {
+          this.timeout(0);
+          var url = 'https://southcentralus.api.cognitive.microsoft.com/customvision/v1.0/Prediction/135e5615-498b-4a2b-a9ed-134815a07f6a/url?iterationId=b7f65256-ec2d-40d9-8687-985bf0e308c9';
+          
+          var options = {
+            url: url,
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'Prediction-Key': 'b582db3effb145019697ca4ea0b6a6f6'
+            },
+            json: { 'Url': 'https://i.imgur.com/HfuBWea.png' }
+        };
+    
+        request(options,function (err, res, body){
+            expect(res.statusCode).to.equal(200);
+            done();
+        });
+  
+      });
+    });
+  });
