@@ -1,4 +1,4 @@
-<!#DOCTYPE 	html>
+<!#DOCTYPE html>
 <html>
 	<head>
 		<title>Contoso Bank</title>
@@ -24,30 +24,37 @@
         }
     </script>
 	</head>
-	
+	<!-- -->
 	<body>
 		<!-- Navigation Bar  -->
 		<nav class= "navbar navbar-default" >
 			<div class="container-fluid">
 				<div class = "navbar-header">
-					<a class="navbar-brand" href="#">Contoso Bank</a>
-				</div>
-				<ul class = "nav navbar-nav">
-					<li class = "active"> <a href="#">Personal</a></li>
-					<li> <a href="#">Business</a></li>
-					<li> <a href="#">Institutional</a></li>
-					<li> <a href="#">Rural</a></li>
-					<li> <a href="#">Who We Are</a></li>
-				</ul>
-				<form class="navbar-form navbar-right">
-					<a id= "login" href="#"><span class="glyphicon glyphicon-user"></span> Jack  </a>
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Search">
-					</div>
-					<button type="submit" class="btn btn-link">
-						<span class="glyphicon glyphicon-search"></span>
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span> 
 					</button>
-				</form>
+					<a id="brand" class="navbar-brand" href="#"><img src="./Images/logo.png"/ style="height:100%;"></a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class = "nav navbar-nav">
+						<li class = "active"> <a href="#">Personal</a></li>
+						<li> <a href="#">Business</a></li>
+						<li> <a href="#">Institutional</a></li>
+						<li> <a href="#">Rural</a></li>
+						<li> <a href="#">Who We Are</a></li>
+					</ul>
+					<form class="navbar-form navbar-right">
+						<a id= "login" href="#"><span class="glyphicon glyphicon-user"></span> Jack  </a>
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Search">
+						</div>
+						<button type="submit" class="btn btn-link">
+							<span class="glyphicon glyphicon-search"></span>
+						</button>
+					</form>
+				</div>
 			</div>
 		</nav>
 		<!-- Carousel  -->
@@ -109,11 +116,9 @@
 				  <h1>Basic</h1>
 				</div>
 				<div class="panel-body">
-				  <p><strong>20</strong> Lorem</p>
-				  <p><strong>15</strong> Ipsum</p>
-				  <p><strong>5</strong> Dolor</p>
-				  <p><strong>2</strong> Sit</p>
-				  <p><strong>Endless</strong> Amet</p>
+				  <p><strong>Fixed 12 month special rate</strong></p>
+				  <p>Min 20% equity required</p>
+				  <p>T&C's apply</p>
 				</div>
 				<div class="panel-footer">
 				  <h3>4.39%</h3>
@@ -128,11 +133,10 @@
 				  <h1>Pro</h1>
 				</div>
 				<div class="panel-body">
-				  <p><strong>50</strong> Lorem</p>
-				  <p><strong>25</strong> Ipsum</p>
-				  <p><strong>10</strong> Dolor</p>
-				  <p><strong>5</strong> Sit</p>
-				  <p><strong>Endless</strong> Amet</p>
+				  <p><strong>Fixed 24 month special rate</strong></p>
+				  <p>Min 20% equity required</p>
+				  <p>T&C's apply</p>
+
 				</div>
 				<div class="panel-footer">
 				  <h3>4.49%</h3>
@@ -147,11 +151,9 @@
 				  <h1>Premium</h1>
 				</div>
 				<div class="panel-body">
-				  <p><strong>100</strong> Lorem</p>
-				  <p><strong>50</strong> Ipsum</p>
-				  <p><strong>25</strong> Dolor</p>
-				  <p><strong>10</strong> Sit</p>
-				  <p><strong>Endless</strong> Amet</p>
+				  <p><strong>House variable rate</strong></p>
+				  <p>Min 20% equity required</p>
+				  <p>T&C's apply</p>
 				</div>
 				<div class="panel-footer">
 				  <h3>4.59%</h3>
@@ -172,7 +174,7 @@
 						<li><a href="#"> Join Contoso </a></li>
 						<li><a href="#"> Savings Account </a></li>
 						<li><a href="#"> Term Deposits </a></li>
-						<li><a href="#"> Help and Support </a></li>
+						<li><a href="faq.html"> Help and Support </a></li>
 					</ul>
 			</div>
 			
@@ -193,13 +195,23 @@
 				<h3 id = "header-special"> News </h3>
 				<div class="media">
 				  <div class="media-left">
-					<img src="icon.jpg" class="media-object" style="width:60px">
+					<a href="#"><img src="./Images/bank.jpg" class="media-object" style="width:60px"></a>
 				  </div>
 				  <div class="media-body">
 					<h4 class="media-heading">Great quarterly results</h4>
-					<p>Lorem ipsum...</p>
+					<p>Up 11% ytd. </p>
 				  </div>
 				</div>
+				<div class="media">
+				  <div class="media-left">
+					<a href="#"><img src="./Images/piggy.jpg" class="media-object" style="width:60px"></a>
+				  </div>
+				  <div class="media-body">
+					<h4 class="media-heading">New Savings Rate</h4>
+					<p>Now 0.12%. </p>
+				  </div>
+				</div>
+				<div class = "btn btn-default">See all</div>
 			</div>
 		</div>
 		

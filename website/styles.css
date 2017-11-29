@@ -3,6 +3,19 @@
   border-color: #ffffff;
 }
 
+#brand {
+		color: #fff;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #fff;
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+  background-color: transparent;
+}
+
 .navbar-default .navbar-nav > li > a {
   color: #ffffff;
 }
@@ -75,6 +88,8 @@
 	
 }
 
+
+
 .carousel-caption {
 		bottom: 45%;
 }
@@ -92,6 +107,11 @@
   color: #fc5050;
 }
 
+.navbar-brand {
+  padding: 5px 5px;
+  line-height: 0px;
+}
+
 .media-body {
 	color:#701515;
 }
@@ -102,6 +122,7 @@
 	right:7%;
  }
  
+
 #chat-frame {
     height: 400px;
     width: 300px;
