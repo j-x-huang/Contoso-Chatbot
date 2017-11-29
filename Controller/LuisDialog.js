@@ -265,6 +265,20 @@ exports.startDialog = function (bot) {
     ]).triggerAction({
         matches: 'CustomVision'
     });
+
+    bot.dialog('SetName', [function (session, args, next) {
+        session.dialogData.args = args || {};
+        builder.Prompts.text(session, "Sure, what would you like me to change your name to");   
+        
+    },
+    function(session, results) {
+        session.conversationData.name = results.response;
+        session.send("Your name is now " + session.conversationData.name);
+    }
+    ]).triggerAction({
+        matches: 'SetName'
+    });
+
     bot.dialog('None', function (session, args) {
         session.send("Sorry I did not understand what you said.");
         
