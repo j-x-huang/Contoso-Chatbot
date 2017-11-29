@@ -31,7 +31,7 @@ exports.deleteAccount = function deleteData(url,session, username ,accountType, 
     });
 };
 
-exports.postAccount = function postData(url, username, accountNumber, accountType) {
+exports.postAccount = function postData(url, username, accountNumber, accountType, session,callback) {
     var options = {
         url: url,
         method: 'POST',
@@ -48,8 +48,9 @@ exports.postAccount = function postData(url, username, accountNumber, accountTyp
       };
 
       request(options, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            console.log(body);
+        if (!error && response.statusCode === 201) {
+            //console.log("sucess");
+            callback(session);
         }
         else{
             console.log(error);

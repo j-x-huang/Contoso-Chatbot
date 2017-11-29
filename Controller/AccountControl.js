@@ -7,7 +7,34 @@ exports.displayBalance = function getBalance(session, username, accountType) {
 };
 
 exports.sendAccount = function postAccount(session, username, accountType) {
-    rest.postAccount(url, username, generateAccountNumber(), accountType);
+
+    rest.getAccount(url , session, username, accountType, function(message, session, username, accountType) {
+        var response = JSON.parse(message);
+        console.log("here");
+        var count = 0;
+
+        for (var index in response) {
+            var usernameReceived = response[index].username;
+            var accountTypeReceived = response[index].account_type;
+
+            if (usernameReceived.toLowerCase() === username.toLowerCase()
+            && accountTypeReceived.toLowerCase() === accountType.toLowerCase()) {
+               count++;
+           }
+        }
+        if (count > 0) {
+            console.log("here2")
+            session.send("You already have a " + accountType + ". You cannot create another.");
+        } else {
+            console.log("here3");
+         rest.postAccount(url, username, generateAccountNumber(), accountType, session, function(session) {
+             session.send("Account created!")
+         });
+        }
+
+    })
+
+
 }
 
 exports.removeAccount = function deleteAccount(session, username, accountType) {
@@ -27,7 +54,7 @@ exports.removeAccount = function deleteAccount(session, username, accountType) {
             }
         }
         if (count === 0) {
-            session.send("You have no " + accountType+ " accounts");
+            session.send("You have no " + accountType+ " accounts.");
         }
     });
 }
