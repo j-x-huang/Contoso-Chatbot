@@ -49,7 +49,11 @@ exports.removeAccount = function deleteAccount(session, username, accountType) {
             if (usernameReceived.toLowerCase() === username.toLowerCase()
              && accountTypeReceived.toLowerCase() === accountType.toLowerCase()) {
                 count++;
-                rest.deleteAccount(url, session, username, accountType, response[index].id, handleDelete);
+                if (response[index].balance !== 0) {
+                    session.send("There are still funds in that account. Please transfer to another account if you wish to delete.");
+                } else {
+                    rest.deleteAccount(url, session, username, accountType, response[index].id, handleDelete);
+                }
                 break;
             }
         }
