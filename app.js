@@ -19,7 +19,7 @@ var connector = new builder.ChatConnector({
 server.post('/api/messages', connector.listen());
 
 // Receive messages from the user
-var bot = new builder.UniversalBot(connector, function (session) {
+var bot = new builder.UniversalBot(connector, [function (session) {
 
     var image64 = new Buffer(fs.readFileSync('contosobotcolor.png').toString("base64"));    
 
@@ -41,8 +41,15 @@ var bot = new builder.UniversalBot(connector, function (session) {
             .images([builder.CardImage.create(session,"data:image/jpeg;base64,"+image64)])
     
 
-    ));
-});
+        ));
+        builder.Prompts.text(session, "Enter your name to begin");
+    
+    },
+    function(session, results) {
+        session.conversationData.name = results.response;
+        session.send("Hi " + session.conversationData.name)
+    }
+]);
 
 // Send welcome when conversation with bot is started, by initiating the root dialog
 bot.on('conversationUpdate', function (message) {

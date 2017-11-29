@@ -30,7 +30,7 @@ exports.startDialog = function (bot) {
             var accountType = accountEntity.entity;
             console.log(accountType);
             if (accountType) {
-                session.send("Getting balance for " + session.conversationData["username"]);
+                session.send("Getting balance for " + session.conversationData.name);
                 account.displayBalance(session, session.conversationData["username"], accountType);
             } else {
                 session.send('No account type identified. Please try again');
@@ -88,7 +88,7 @@ exports.startDialog = function (bot) {
             var accountEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'Account');
             var accountType = accountEntity.entity;
             if (accountType) {
-                session.send("Opening a new " + accountType + " account for " + session.conversationData["username"]);
+                session.send("Opening a new " + accountType + " account for " + session.conversationData.name);
                 account.sendAccount(session, session.conversationData["username"], accountType);
             } else {
                 session.send('No account type identified. Please try again');
@@ -117,7 +117,7 @@ exports.startDialog = function (bot) {
     });
 
     bot.dialog('Greeting', function (session, args) {
-        session.send("Hi!");
+        session.send("Hi! " + session.conversationData.name);
         
     }).triggerAction({
         matches: 'Greeting'
@@ -137,7 +137,7 @@ exports.startDialog = function (bot) {
                 session.conversationData["username"] = results.response;
             }
 
-            session.send("Getting accounts for " + session.conversationData["username"]);
+            session.send("Getting accounts for " + session.conversationData.name);
             account.displayAccounts(session, session.conversationData["username"]);         
 
         }
@@ -213,13 +213,25 @@ exports.startDialog = function (bot) {
 
     bot.dialog('QnA', [function(session, args, next) {
         session.dialogData.args = args || {};
-        builder.Prompts.text(session, "Sure, what would you like to know?");
+        builder.Prompts.text(session, "Sure " +session.conversationData.name + " what would you like to know?");
     },
     function(session,results, next) {
         qna.talkToQnA(session, results.response);
     }
     ]).triggerAction({
         matches: 'QnA'
+    })
+
+    bot.dialog('SwitchUser', [function(session, args, next) {
+        session.dialogData.args = args || {};
+        builder.Prompts.text(session, "Sure " +session.conversationData.name + " what username do you want to change to");
+    },
+        function(session, results, next) {
+            session.conversationData["username"] = results.response;
+            session.send("Username changed to " + session.conversationData["username"]);
+        }
+    ]).triggerAction({
+        matches:'SwitchUser'
     })
     bot.dialog('None', function (session, args) {
         session.send("help func");

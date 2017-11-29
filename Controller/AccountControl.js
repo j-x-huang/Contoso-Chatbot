@@ -76,14 +76,14 @@ exports.displayAccounts = function getAllAccounts(session, username) {
                 if (response.length - 1) {
                     allAccounts.push(response[index].account_type);
                 } else {
-                    allAccounts.push(response[index].account_type + ', ');
+                    allAccounts.push(response[index].account_type + `,`);
                 }
             }
         }
         if (count === 0) {
             session.send("You have no accounts");
         } else {
-            session.send("%s, you have the following bank accounts: %s", username, allAccounts);
+            session.send("You have the following bank accounts: %s", allAccounts);
         }
 
     })
