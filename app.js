@@ -51,7 +51,12 @@ var bot = new builder.UniversalBot(connector, [function (session) {
     },
     function(session, results) {
         session.conversationData.name = results.response;
-        session.send("Hi " + session.conversationData.name)
+        if (!session.conversationData.name) {
+            session.conversationData.name = "Human";
+            session.send("Sorry I didn't quite get your name. I will call you Human for now")
+        } else {
+            session.send("Hi " + session.conversationData.name);
+        }
     }
 ]);
 
