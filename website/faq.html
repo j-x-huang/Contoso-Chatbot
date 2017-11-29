@@ -1,0 +1,74 @@
+<!#DOCTYPE html>
+<html>
+	<head>
+		<title>Contoso Bank FAQ</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="styles.css">
+		<script src="js/jquery.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+	</head>
+	<!--Navigation bar. Same as menu -->
+	<nav class= "navbar navbar-default" >
+			<div class="container-fluid">
+				<div class = "navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span> 
+					</button>
+					<a id="brand" class="navbar-brand" href="index.html"><img src="./Images/logo.png"/ style="height:100%;"></a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class = "nav navbar-nav">
+						<li class = "active"> <a href="index.html">Personal</a></li>
+						<li> <a href="#">Business</a></li>
+						<li> <a href="#">Institutional</a></li>
+						<li> <a href="#">Rural</a></li>
+						<li> <a href="#">Who We Are</a></li>
+					</ul>
+					<form class="navbar-form navbar-right">
+						<a id= "login" href="#"><span class="glyphicon glyphicon-user"></span> Jack  </a>
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Search">
+						</div>
+						<button type="submit" class="btn btn-link">
+							<span class="glyphicon glyphicon-search"></span>
+						</button>
+					</form>
+				</div>
+			</div>
+		</nav>
+		<!--FAQ panel -->
+		<div class = "container-fluid">
+			<div class="panel panel-default text-left">
+				<div class="panel-heading" style="padding: 3px 10px 5px 10px;">
+				  <h1>FAQ</h1>
+				</div>
+				<div class="panel-body">
+					<h2>ContosoBot </h2>
+					<h4>How do I view my bank balance? </h4>
+					<p>You can view your bank balance my typing phrases such as: "Get me the current balance of my savings account " or "what is the balance of my cheque account". Be sure to state the account type.\n\nIf you don't want to state your account type, and view your balance across all account type a phrase such as: "Get my accou</p>
+				
+					<h4>How do I open a new account? </h4>
+					<p>You can open new bank accounts by typing phrases such as: "I want to create a new savings account" or "open a new cheque account". You can only open accounts of types that you do not already have. </p>
+					
+					<h4>How do I remove an account? </h4>
+					<p>You can delete a account you own by typing phrases such as "remove my savings account" or "I want to delete my term deposit account". You can only remove accounts that have $0 in balance. </p>
+					
+					<h4>How do I view all accounts I have? </h4>
+					<p>To view all your accounts and balances type phrases such as: "Get my accounts" or "What accounts do I have". </p>
+					
+					<h4>How do I transfer money? </h4>
+					<p>To transfer money type phrases such as: "I want to transfer money" or "transfer money for me". You can only transfer money between your own accounts that you own. Follow the steps that ContosoBot gives, and when you go type the amount you want transferred please just type a number. </p>
+					
+					<h4>How can I check stock prices? </h4>
+					<p>You can check the stock price for a company for typing phrases such as "Get me the stock price of Apple" or "What are the stock prices of Microsoft". You do not have to state the companies ticker-code :) .  </p>
+					
+					<h4>How do I get the change rates </h4>
+					<p>You can get the exchange rate by typing phrases such as "How much is the USD in NZD" or "What is the value of NZD in JPY" or simply "NZD in GDP". Please use the currency code. </p>
+				</div>
+			  </div> 
+		</div>
+</html>
