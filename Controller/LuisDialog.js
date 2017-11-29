@@ -1,6 +1,6 @@
 var builder = require('botbuilder');
 var account = require('./AccountControl');
-var stocks = require('./StockQuotes');
+var finance = require('./Finance');
 var qna = require('./QnA');
 var fs = require('fs');
 var customVision = require('./CustomVision')
@@ -110,7 +110,7 @@ exports.startDialog = function (bot) {
         var symbol = companyMap[company.toLowerCase()]; //consult dictionary to get code
         if (symbol) {
             session.send("Finding stock quotes for " + company);
-            stocks.displayStocks(session, symbol, company);
+            finance.displayStocks(session, symbol, company);
         } else {
             session.send("I cannot find stocks for the company you are looking for"); //if code is not in dictionary
         }
@@ -154,7 +154,7 @@ exports.startDialog = function (bot) {
         
         if (cEntities) {
             session.send("Getting exchange rates")
-            stocks.displayExchangeRate(session, cEntities[0].entity.toUpperCase(), cEntities[1].entity.toUpperCase()); //Extracts the code from the entities
+            finance.displayExchangeRate(session, cEntities[0].entity.toUpperCase(), cEntities[1].entity.toUpperCase()); //Extracts the code from the entities
         } else {
             session.send("No valid currencies selected"); //no entities in intent message
         }
