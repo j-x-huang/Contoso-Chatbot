@@ -235,7 +235,7 @@ exports.startDialog = function (bot) {
     //swaps the users username
     bot.dialog('SwitchUser', [function(session, args, next) {
         session.dialogData.args = args || {};
-        builder.Prompts.text(session, "Sure " +session.conversationData.name + " what username do you want to change to");
+        builder.Prompts.text(session, "Sure " +session.conversationData.name + " what username do you want to change to?");
     },
         function(session, results, next) {
             session.conversationData["username"] = results.response;
@@ -247,7 +247,7 @@ exports.startDialog = function (bot) {
     //user ask if they can upload message
     bot.dialog('CustomVision', [
         function (session) {
-            builder.Prompts.text(session, "Sure " +session.conversationData.name + " send an image link");  //get image url          
+            builder.Prompts.text(session, "Sure " +session.conversationData.name + " send me an image link");  //get image url          
         },
 
         function(session, results) {
@@ -270,7 +270,7 @@ exports.startDialog = function (bot) {
     //change user's name
     bot.dialog('SetName', [function (session, args, next) {
         session.dialogData.args = args || {};
-        builder.Prompts.text(session, "Sure, what would you like me to change your name to");   
+        builder.Prompts.text(session, "Sure, what would you like me to change your name to?");   
         
     },
     function(session, results) {
